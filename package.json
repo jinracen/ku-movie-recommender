@@ -1,0 +1,20 @@
+{
+  "name": "ku-movie-recommender",
+  "version": "1.0.0",
+  "description": "고려대학교 학우를 위한 감정 기반 영화 추천 애플리케이션",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "keywords": [
+    "korea-university",
+    "movie-recommender",
+    "electron"
+  ],
+  "author": "Korea University Student",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^25.0.0"
+  }
+}

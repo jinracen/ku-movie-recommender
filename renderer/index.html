@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KU 호랑이 영화 추천기 | 고려대학교 학우를 위한 감정 영화 추천</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-logo">
+        <img src="../assets/ku_tiger_logo.png" alt="KU Logo" class="ku-logo-img">
+        <div class="logo-text">
+          <span class="ku-title-en">KOREA UNIVERSITY</span>
+          <span class="ku-title-kr">호랑이 영화 추천기</span>
+        </div>
+      </div>
+      <div id="header-user-info" class="header-user-info hidden">
+        <span class="user-welcome-msg"><strong id="header-user-name">홍길동</strong> 학우님</span>
+        <button id="btn-logout" class="btn btn-secondary btn-sm">로그아웃</button>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="app-main">
+      
+      <!-- 1. LOGIN SCREEN -->
+      <section id="sec-login" class="auth-section">
+        <div class="auth-card glass-panel">
+          <div class="auth-card-header">
+            <img src="../assets/ku_tiger_logo.png" alt="KU Tiger Logo" class="auth-logo">
+            <h2>학우 로그인</h2>
+            <p>오늘의 감정을 기록하고 맞춤 영화를 추천받으세요</p>
+          </div>
+          <form id="form-login" class="auth-form">
+            <div class="form-group">
+              <label for="login-id">아이디</label>
+              <input type="text" id="login-id" placeholder="아이디를 입력하세요" required>
+            </div>
+            <div class="form-group">
+              <label for="login-pw">비밀번호</label>
+              <input type="password" id="login-pw" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            <div class="form-error" id="login-error"></div>
+            <button type="submit" class="btn btn-primary btn-block">로그인</button>
+          </form>
+          <div class="auth-footer">
+            <span>아직 계정이 없으신가요?</span>
+            <button id="btn-go-register" class="btn-link">학우 회원가입</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. REGISTER SCREEN -->
+      <section id="sec-register" class="auth-section hidden">
+        <div class="auth-card glass-panel register-card">
+          <div class="auth-card-header">
+            <h2>학우 회원가입</h2>
+            <p>원활한 영화 추천 및 연령 제한 필터링을 위해 정보를 입력해주세요</p>
+          </div>
+          <form id="form-register" class="auth-form grid-form">
+            <div class="form-group">
+              <label for="reg-id">아이디 *</label>
+              <input type="text" id="reg-id" placeholder="사용할 아이디" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-pw">비밀번호 *</label>
+              <div class="password-input-wrap">
+                <input type="password" id="reg-pw" placeholder="사용할 비밀번호" required>
+                <button type="button" id="btn-toggle-reg-pw" class="btn-toggle-pw">👁️</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-name">이름 *</label>
+              <input type="text" id="reg-name" placeholder="이름 (예: 홍길동)" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-age">나이 (만 나이 기준) *</label>
+              <input type="number" id="reg-age" min="1" max="120" placeholder="예: 20" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-gender">성별 *</label>
+              <select id="reg-gender" required>
+                <option value="" disabled selected>성별 선택</option>
+                <option value="남성">남성</option>
+                <option value="여성">여성</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reg-dept">소속 학과 *</label>
+              <input type="text" id="reg-dept" placeholder="예: 중어중문학과" required>
+            </div>
+            <div class="form-group full-width">
+              <label for="reg-movie">가장 좋아하는 영화 (추천 시 최우선 반영)</label>
+              <input type="text" id="reg-movie" placeholder="예: 라라랜드, 어바웃 타임, 써니">
+            </div>
+            <div class="form-group full-width">
+              <label for="reg-genre">선호하는 영화 장르 *</label>
+              <select id="reg-genre" required>
+                <option value="" disabled selected>선호 장르 선택</option>
+                <option value="로맨스">로맨스 / 멜로</option>
+                <option value="코미디">코미디 / 명랑</option>
+                <option value="액션">액션 / 느와르</option>
+                <option value="SF">SF / 판타지</option>
+                <option value="스릴러">스릴러 / 미스터리</option>
+                <option value="드라마">드라마 / 다큐멘터리</option>
+              </select>
+            </div>
+            <div class="form-error full-width" id="register-error"></div>
+            <div class="form-actions full-width">
+              <button type="submit" class="btn btn-primary">가입하기</button>
+              <button type="button" id="btn-back-login" class="btn btn-secondary">로그인으로 돌아가기</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 3. DASHBOARD SCREEN (MAIN APP) -->
+      <section id="sec-dashboard" class="dashboard-section hidden">
+        <div class="dashboard-grid">
+          
+          <!-- LEFT PANEL: INPUT MOOD -->
+          <div class="dashboard-left glass-panel">
+            <div class="section-title-area">
+              <span class="badge">오늘의 기록</span>
+              <h3>학우님, 오늘 하루는 어떠셨나요?</h3>
+              <p>기분 아이콘을 선택하고 오늘의 일기를 가볍게 적어주세요.</p>
+            </div>
+            
+            <div class="mood-selector-container">
+              <label class="input-label">1. 오늘의 기분 선택</label>
+              <div class="mood-options">
+                <button type="button" class="mood-btn" data-mood="기쁨">
+                  <span class="mood-emoji">😊</span>
+                  <span class="mood-text">기쁨/신남</span>
+                </button>
+                <button type="button" class="mood-btn" data-mood="슬픔">
+                  <span class="mood-emoji">😭</span>
+                  <span class="mood-text">슬픔/우울</span>
+                </button>
+                <button type="button" class="mood-btn" data-mood="화남">
+                  <span class="mood-emoji">😡</span>
+                  <span class="mood-text">화남/짜증</span>
+                </button>
+                <button type="button" class="mood-btn" data-mood="피곤">
+                  <span class="mood-emoji">🥱</span>
+                  <span class="mood-text">피곤/지침</span>
+                </button>
+                <button type="button" class="mood-btn" data-mood="불안">
+                  <span class="mood-emoji">😳</span>
+                  <span class="mood-text">불안/긴장</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="diary-input-container">
+              <label for="txt-diary" class="input-label">2. 오늘 있었던 일 또는 기분 적기 (자유롭게)</label>
+              <textarea id="txt-diary" rows="6" placeholder="예) 오늘 전공 시험이 끝나서 아주 신나요! 친구들과 안암동에서 치맥하기로 함.&#10;예) 연인과 헤어져서 너무 슬프고 우울한 하루예요..."></textarea>
+            </div>
+
+            <button id="btn-get-recommendation" class="btn btn-primary btn-block btn-lg">영화 추천받기 🎬</button>
+          </div>
+
+          <!-- RIGHT PANEL: RECOMMENDATIONS / HISTORY -->
+          <div class="dashboard-right">
+            
+            <!-- A. RESULTS VIEW (Show after clicking recommendation) -->
+            <div id="recommendation-results" class="results-container glass-panel hidden">
+              <div class="results-header">
+                <span class="badge badge-success">추천 완료</span>
+                <h3>학우님만을 위한 오늘의 영화 추천 3선</h3>
+                <p>오늘 감정과 일기 분석을 통해 연령 제한에 부합하는 최고의 영화를 선정했습니다.</p>
+              </div>
+              
+              <div id="movie-cards-container" class="movie-cards-grid">
+                <!-- Movie Cards will be inserted here dynamically -->
+              </div>
+              
+              <div class="results-footer">
+                <button id="btn-back-dashboard" class="btn btn-secondary">다시 기록하기</button>
+              </div>
+            </div>
+
+            <!-- B. DEFAULT VIEW: HISTORY & CAMPUS AD -->
+            <div id="default-dashboard-view" class="history-container glass-panel">
+              <div class="section-title-area">
+                <span class="badge">기록 보관소</span>
+                <h3>감정 기록 히스토리</h3>
+                <p>최근 학우님이 남겨주신 기분 분석과 추천 영화 기록입니다.</p>
+              </div>
+              
+              <div id="history-list" class="history-list">
+                <!-- History items will be inserted here dynamically -->
+                <div class="empty-history">
+                  <span class="empty-icon">📂</span>
+                  <p>아직 남겨진 감정 기록이 없습니다.<br>왼쪽에서 첫 기분을 기록해보세요!</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>© 2026 KOREA UNIVERSITY. 중어중문학과 학우 개발 프로젝트 - 안암동 호랑이 영화 추천</p>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="../database.js"></script>
+  <script src="../recommender.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
